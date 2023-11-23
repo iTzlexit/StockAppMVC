@@ -14,35 +14,36 @@ using System.Text.Json;
 
 namespace Services
 {
-    public class FinhubService: IFinhubService
+    public class FinhubService : IFinhubService
     {
+
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
 
-        public FinhubService(IHttpClientFactory httpClientFactory, IConfiguration configuration) // install 2 packages Microsoft.Extensions.Configuration.Abstractions & Microsoft.Extensions.Http
+
+        public FinhubService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
         }
 
-        public Dictionary<string, object>? GetCompanyProfile(string stockSymbol) 
-        {
-            //create the http client
 
+        public Dictionary<string, object>? GetCompanyProfile(string stockSymbol)
+        {
+            //create http client
             HttpClient httpClient = _httpClientFactory.CreateClient();
 
-            //create the http request
-
+            //create http request
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"https://finnhub.io/api/v1/stock/profile2?symbol={stockSymbol}&token={_configuration["FinnhubToken"]}") //URI includes the secret token
             };
 
-            //send the request
-            HttpResponseMessage httpResponseMessage = httpClient.Send(httpRequestMessage );
+            //send request
+            HttpResponseMessage httpResponseMessage = httpClient.Send(httpRequestMessage);
 
-            //read the response body
+            //read response body
             string responseBody = new StreamReader(httpResponseMessage.Content.ReadAsStream()).ReadToEnd();
 
             //convert response body (from JSON into Dictionary)
@@ -56,9 +57,8 @@ namespace Services
 
             //return response dictionary back to the caller
             return responseDictionary;
-
-
         }
+
 
         public Dictionary<string, object>? GetStockPriceQuote(string stockSymbol)
         {
@@ -90,17 +90,8 @@ namespace Services
             //return response dictionary back to the caller
             return responseDictionary;
         }
-
-
-
-        /*
-        User Secrets:
-        dotnet user-secrets init --project StockApp
-        dotnet user-secrets set "FinnhubToken" "clf3pj1r01qoveppj5rgclf3pj1r01qoveppj5s0" --project StockApp
-        */
-
-
     }
-
-
 }
+
+
+
