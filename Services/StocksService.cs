@@ -77,12 +77,16 @@ namespace Services
 
         public List<BuyOrderResponse> GetBuyOrders()
         {
-            throw new NotImplementedException();
+           return _buyOrders
+                .OrderByDescending(temp=> temp.DateAndTimeOfOrder)
+                .Select(temp => temp.ToBuyOrderResponse()).ToList();
         }
 
         public List<SellOrderResponse> GetSellOrders()
         {
-            throw new NotImplementedException();
+            return _sellOrders
+                .OrderByDescending(temp => temp.DateAndTimeOfOrder)
+                .Select(temp=> temp.ToSellOrderResponse()).ToList();
         }
     }
 }

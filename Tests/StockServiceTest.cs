@@ -266,5 +266,97 @@ namespace Tests
 
         #endregion
 
+        #region Get Buy Orders 
+
+        //The GetAllBuyOrders() should return an empty list by default
+        [Fact]
+        public void GetAllBuyOrders_DefaultList_ToBeEmpty()
+        {
+            //Act
+            List<BuyOrderResponse> buyOrdersFromGet = _stocksService.GetBuyOrders();
+
+            //Assert
+            Assert.Empty(buyOrdersFromGet);
+        }
+
+
+        [Fact]
+        public void GetAllBuyOrders_WithFewBuyOrders_ToBeSuccessful()
+        {
+            //Arrange
+
+            //Create a list of buy orders with hard-coded data
+            BuyOrderRequest buyOrder_request_1 = new BuyOrderRequest() { StockSymbol = "MSFT", StockName = "Microsoft", Price = 1, Quantity = 1, DateAndTimeOfOrder = DateTime.Parse("2023-01-01 9:00") };
+
+            BuyOrderRequest buyOrder_request_2 = new BuyOrderRequest() { StockSymbol = "MSFT", StockName = "Microsoft", Price = 1, Quantity = 1, DateAndTimeOfOrder = DateTime.Parse("2023-01-01 9:00") };
+
+            List<BuyOrderRequest> buyOrder_requests = new List<BuyOrderRequest>() { buyOrder_request_1, buyOrder_request_2 };
+
+            List<BuyOrderResponse> buyOrder_response_list_from_add = new List<BuyOrderResponse>();
+
+            foreach (BuyOrderRequest buyOrder_request in buyOrder_requests)
+            {
+                BuyOrderResponse buyOrder_response = _stocksService.CreateBuyOrder(buyOrder_request);
+                buyOrder_response_list_from_add.Add(buyOrder_response);
+            }
+
+            //Act
+            List<BuyOrderResponse> buyOrders_list_from_get = _stocksService.GetBuyOrders();
+
+
+            //Assert
+            foreach (BuyOrderResponse buyOrder_response_from_add in buyOrder_response_list_from_add)
+            {
+                Assert.Contains(buyOrder_response_from_add, buyOrders_list_from_get);
+            }
+        }
+
+        #endregion
+
+        #region GetSellOrders 
+        //The GetAllSellOrders() should return an empty list by default
+        [Fact]
+        public void GetAllSellOrders_DefaultList_ToBeEmpty()
+        {
+            //Act
+            List<SellOrderResponse> sellOrdersFromGet = _stocksService.GetSellOrders();
+
+            //Assert
+            Assert.Empty(sellOrdersFromGet);
+        }
+
+
+        [Fact]
+        public void GetAllSellOrders_WithFewSellOrders_ToBeSuccessful()
+        {
+            //Arrange
+
+            //Create a list of sell orders with hard-coded data
+            SellOrderRequest sellOrder_request_1 = new SellOrderRequest() { StockSymbol = "MSFT", StockName = "Microsoft", Price = 1, Quantity = 1, DateAndTimeOfOrder = DateTime.Parse("2023-01-01 9:00") };
+
+            SellOrderRequest sellOrder_request_2 = new SellOrderRequest() { StockSymbol = "MSFT", StockName = "Microsoft", Price = 1, Quantity = 1, DateAndTimeOfOrder = DateTime.Parse("2023-01-01 9:00") };
+
+            List<SellOrderRequest> sellOrder_requests = new List<SellOrderRequest>() { sellOrder_request_1, sellOrder_request_2 };
+
+            List<SellOrderResponse> sellOrder_response_list_from_add = new List<SellOrderResponse>();
+
+            foreach (SellOrderRequest sellOrder_request in sellOrder_requests)
+            {
+                SellOrderResponse sellOrder_response = _stocksService.CreateSellOrder(sellOrder_request);
+                sellOrder_response_list_from_add.Add(sellOrder_response);
+            }
+
+            //Act
+            List<SellOrderResponse> sellOrders_list_from_get = _stocksService.GetSellOrders();
+
+
+            //Assert
+            foreach (SellOrderResponse sellOrder_response_from_add in sellOrder_response_list_from_add)
+            {
+                Assert.Contains(sellOrder_response_from_add, sellOrders_list_from_get);
+            }
+        }
+        #endregion Region
+
     }
 }
