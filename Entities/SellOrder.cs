@@ -10,7 +10,7 @@ namespace Entities
     public class SellOrder
     {
         [Key]
-        public Guid SellOrderId { get; set; }
+        public Guid SellOrderID { get; set; }
         public string StockSymbol{ get; set; } = string.Empty;
         [Required(ErrorMessage = "Stock name can't be null or empty ")]
         public string StockName { get; set; } = string.Empty;
