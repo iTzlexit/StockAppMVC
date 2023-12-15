@@ -55,7 +55,24 @@ namespace Services
 
         public SellOrderResponse CreateSellOrder(SellOrderRequest? sellOrderRequest)
         {
-            throw new NotImplementedException();
+            //Validation: sellOrderRequest can't be null
+            if (sellOrderRequest == null)
+                throw new ArgumentNullException(nameof(sellOrderRequest));
+
+            //Model validation
+            ValidationHelper.ModelValidation(sellOrderRequest);
+
+            //convert sellOrderRequest into SellOrder type
+            SellOrder sellOrder = sellOrderRequest.ToSellOrder();
+
+            //generate SellOrderID
+            sellOrder.SellOrderID = Guid.NewGuid();
+
+            //add sell order object to sell orders list
+            _sellOrders.Add(sellOrder);
+
+            //convert the SellOrder object into SellOrderResponse type
+            return sellOrder.ToSellOrderResponse();
         }
 
         public List<BuyOrderResponse> GetBuyOrders()
